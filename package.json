@@ -76,7 +76,9 @@
     "release": "bump"
   },
   "peerDependencies": {
-    "jotai": "^2.0.0"
+    "immer": "^10.0.0",
+    "jotai": "^2.0.0",
+    "react": "^18.0.0"
   },
   "devDependencies": {
     "@innei/bump-version": "1.5.10",
@@ -87,16 +89,19 @@
     "@rollup/plugin-node-resolve": "15.1.0",
     "@rollup/plugin-typescript": "11.1.2",
     "@types/node": "20.5.0",
+    "@types/react": "^18.0.0",
     "@unocss/preset-wind": "0.55.1",
     "dts-bundle-generator": "^8.0.1",
     "esbuild": "0.19.2",
     "husky": "8.0.3",
+    "immer": "10.0.2",
     "jotai": "2.4.0",
     "lint-staged": "14.0.0",
     "postcss": "8.4.28",
     "postcss-import": "15.1.0",
     "postcss-nested": "6.0.1",
     "prettier": "3.0.2",
+    "react": "^18.0.0",
     "rollup": "3.28.0",
     "rollup-plugin-esbuild": "5.0.0",
     "rollup-plugin-peer-deps-external": "2.2.4",
@@ -110,4 +115,3 @@
     "vitest": "0.34.1"
   }
 }
-
