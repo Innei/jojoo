@@ -1,8 +1,7 @@
 {
   "name": "jojoo",
-  "private": true,
   "version": "0.0.0",
-  "description": "TODO",
+  "description": "A utils for Jotai v2.",
   "author": "Innei",
   "license": "MIT",
   "repository": {
@@ -76,6 +75,9 @@
     "prepare": "husky install && cd example && pnpm i",
     "release": "bump"
   },
+  "peerDependencies": {
+    "jotai": "^2.0.0"
+  },
   "devDependencies": {
     "@innei/bump-version": "1.5.10",
     "@innei/eslint-config-react-ts": "0.11.1",
@@ -88,8 +90,8 @@
     "@unocss/preset-wind": "0.55.1",
     "dts-bundle-generator": "^8.0.1",
     "esbuild": "0.19.2",
-    "gh-pages": "6.0.0",
     "husky": "8.0.3",
+    "jotai": "2.4.0",
     "lint-staged": "14.0.0",
     "postcss": "8.4.28",
     "postcss-import": "15.1.0",
@@ -108,3 +110,4 @@
     "vitest": "0.34.1"
   }
 }
+
