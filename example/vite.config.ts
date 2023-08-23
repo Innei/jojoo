@@ -23,7 +23,7 @@ export default defineConfig({
 
   // root: resolve(__dirname, './example'),
   optimizeDeps: {
-    include: ['my-awesome-lib'],
+    include: ['jojoo'],
   },
   // resolve: {
   //   alias: {
