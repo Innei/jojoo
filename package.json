@@ -23,20 +23,23 @@
     }
   },
   "publishConfig": {
-    "main": "dist/index.cjs",
-    "module": "dist/index.js",
-    "types": "types/index.d.ts",
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
     "exports": {
       ".": {
         "type": "./dist/index.d.ts",
-        "import": "./dist/index.js",
-        "require": "./dist/index.cjs"
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.js"
       },
-      "./src": {
-        "import": "./src"
+      "./react": {
+        "type": "./dist/react/index.d.ts",
+        "import": "./dist/react/index.mjs",
+        "require": "./dist/react/index.js"
       },
-      "./src/*": {
-        "import": "./src/*"
+      "./vanilla": {
+        "type": "./dist/vanilla/index.d.ts",
+        "import": "./dist/vanilla/index.mjs",
+        "require": "./dist/vanilla/index.js"
       }
     }
   },
