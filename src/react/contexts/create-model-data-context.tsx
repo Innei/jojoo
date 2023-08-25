@@ -20,30 +20,30 @@ import { useBeforeMounted } from '../hooks/use-before-mounted.js'
 
 export const createModelDataProvider = <Model,>() => {
   const jotaiStore = getStore()
-  const CurrentDataAtomContext = createContext(
+  const ModelDataAtomContext = createContext(
     null! as PrimitiveAtom<null | Model>,
   )
-  const globalCurrentDataAtom = atom<null | Model>(null)
-  const CurrentDataAtomProvider: FC<
+  const globalModelDataAtom = atom<null | Model>(null)
+  const ModelDataAtomProvider: FC<
     PropsWithChildren<{
       overrideAtom?: PrimitiveAtom<null | Model>
     }>
   > = ({ children, overrideAtom }) => {
     return (
-      <CurrentDataAtomContext.Provider
-        value={overrideAtom ?? globalCurrentDataAtom}
+      <ModelDataAtomContext.Provider
+        value={overrideAtom ?? globalModelDataAtom}
       >
         {children}
-      </CurrentDataAtomContext.Provider>
+      </ModelDataAtomContext.Provider>
     )
   }
-  const CurrentDataProvider: FC<
+  const ModelDataProvider: FC<
     {
       data: Model
     } & PropsWithChildren
   > = memo(({ data, children }) => {
     const currentDataAtom =
-      useContext(CurrentDataAtomContext) ?? globalCurrentDataAtom
+      useContext(ModelDataAtomContext) ?? globalModelDataAtom
 
     useBeforeMounted(() => {
       jotaiStore.set(currentDataAtom, data)
@@ -62,14 +62,14 @@ export const createModelDataProvider = <Model,>() => {
     return children
   })
 
-  CurrentDataProvider.displayName = 'CurrentDataProvider'
+  ModelDataProvider.displayName = 'ModelDataProvider'
 
-  const useCurrentDataSelector = <T,>(
+  const useModelDataSelector = <T,>(
     selector: (data: Model | null) => T,
     deps?: any[],
   ) => {
     const currentDataAtom =
-      useContext(CurrentDataAtomContext) ?? globalCurrentDataAtom
+      useContext(ModelDataAtomContext) ?? globalModelDataAtom
     const nextSelector = useCallback((data: Model | null) => {
       return data ? selector(data) : null
     }, deps || noopArr)
@@ -77,26 +77,26 @@ export const createModelDataProvider = <Model,>() => {
     return useAtomValue(selectAtom(currentDataAtom, nextSelector))
   }
 
-  const useSetCurrentData = () =>
-    useSetAtom(useContext(CurrentDataAtomContext) ?? globalCurrentDataAtom)
+  const useSetModelData = () =>
+    useSetAtom(useContext(ModelDataAtomContext) ?? globalModelDataAtom)
 
-  const setGlobalCurrentData = (recipe: (draft: Model) => void) => {
+  const setGlobalModelData = (recipe: (draft: Model) => void) => {
     jotaiStore.set(
-      globalCurrentDataAtom,
-      produce(jotaiStore.get(globalCurrentDataAtom), recipe),
+      globalModelDataAtom,
+      produce(jotaiStore.get(globalModelDataAtom), recipe),
     )
   }
 
-  const getGlobalCurrentData = () => {
-    return jotaiStore.get(globalCurrentDataAtom)
+  const getGlobalModelData = () => {
+    return jotaiStore.get(globalModelDataAtom)
   }
 
   return {
-    CurrentDataAtomProvider,
-    CurrentDataProvider,
-    useCurrentDataSelector,
-    useSetCurrentData,
-    setGlobalCurrentData,
-    getGlobalCurrentData,
+    ModelDataAtomProvider,
+    ModelDataProvider,
+    useModelDataSelector,
+    useSetModelData,
+    setGlobalModelData,
+    getGlobalModelData,
   }
 }
