@@ -14,34 +14,6 @@
   ],
   "type": "module",
   "main": "./src/index.ts",
-  "bump": {
-    "leading": [
-      "git pull --rebase",
-      "pnpm i"
-    ],
-    "trailing": [
-      "npm run build"
-    ],
-    "publish": true,
-    "changelog": {
-      "enable": true,
-      "skipUnstable": true
-    },
-    "with_tags": true,
-    "allowed_branches": [
-      "master",
-      "main",
-      {
-        "name": "dev/*",
-        "allow_types": [
-          "premajor",
-          "preminor",
-          "prepatch",
-          "prerelease"
-        ]
-      }
-    ]
-  },
   "exports": {
     ".": {
       "import": "./src/index.ts"
@@ -81,7 +53,7 @@
   },
   "bump": {
     "before": [
-      "npm run package"
+      "npm run build"
     ],
     "publish": true,
     "changelog": true
