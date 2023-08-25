@@ -10,7 +10,7 @@ import { getEntries } from './tools/get-entries.js'
 // @ts-expect-error -- rollup-plugin-dts has incorrect types
 const dts = dtsExports.default as typeof dtsExports
 
-const externalModules = Object.keys(pkgJson.dependencies)
+const externalModules = Object.keys(pkgJson.dependencies || {})
   .concat(Object.keys(pkgJson.peerDependencies))
   .concat(['react-router-dom', 'next'])
 const external = (id: string) => {
