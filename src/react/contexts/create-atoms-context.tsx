@@ -3,6 +3,7 @@ import { useAtomValue } from 'jotai'
 import type { ExtractAtomValue, PrimitiveAtom } from 'jotai'
 import type { FC, PropsWithChildren } from 'react'
 
+import { defineProperty } from '~/__internal/helper.js'
 import { getStore } from '~/index.js'
 
 type AtomState<T> = {
@@ -17,33 +18,53 @@ type Ctx<Atoms> = {
   atoms: Atoms
 }
 
+type ActionType = { [K in string]?: () => void | Promise<void> }
+
 const ATOMS_CONTEXT_KEY = Symbol('ATOMS_CONTEXT')
+
+interface AtomsInternalContextType<T, A = AtomState<T>, Ac = ActionType> {
+  AtomsContext: React.Context<A>
+  ActionsContext: React.Context<Ac>
+
+  actionsFactory: (ctx: Ctx<A>) => Ac
+}
+const createActionContext = <T, Atoms = AtomState<T>>(atoms: Atoms) => {
+  const jotaiStore = getStore()
+  return {
+    get: jotaiStore.get,
+    set: jotaiStore.set,
+    atoms,
+  }
+}
 export const createAtomsContext = <
   T,
   Atoms = AtomState<T>,
-  Action extends {
-    [K in string]?: () => void | Promise<void>
-  } = {},
+  Action extends ActionType = {},
 >(
   atoms: Atoms,
   actions: (ctx: Ctx<Atoms>) => Action,
 ) => {
   const AtomsContext = createContext(atoms)
 
-  const jotaiStore = getStore()
-  const actionCtx = {
-    get: jotaiStore.get,
-    set: jotaiStore.set,
-    atoms,
-  }
-  const returnActions = actions(actionCtx)
+  const returnActions = actions(createActionContext(atoms))
   const ActionsContext = createContext(returnActions)
+
+  const AtomsInternalContext = createContext<
+    AtomsInternalContextType<T, Atoms, Action>
+  >(null!)
+  const internalCtxValue: AtomsInternalContextType<T, Atoms, Action> = {
+    ActionsContext,
+    AtomsContext,
+    actionsFactory: actions,
+  }
 
   const Provider: FC<PropsWithChildren> = ({ children }) => {
     return (
       <AtomsContext.Provider value={atoms}>
         <ActionsContext.Provider value={returnActions}>
-          {children}
+          <AtomsInternalContext.Provider value={internalCtxValue}>
+            {children}
+          </AtomsInternalContext.Provider>
         </ActionsContext.Provider>
       </AtomsContext.Provider>
     )
@@ -65,11 +86,7 @@ export const createAtomsContext = <
 
   const combinedValue = [Provider, hooks, atoms] as const
 
-  Reflect.defineProperty(combinedValue, ATOMS_CONTEXT_KEY, {
-    value: AtomsContext,
-    writable: false,
-    enumerable: false,
-  })
+  defineProperty(combinedValue, ATOMS_CONTEXT_KEY, AtomsInternalContext)
 
   return combinedValue
 }
@@ -81,47 +98,34 @@ export const createOverrideAtomsContext = <
   // @ts-expect-error
   atoms: Partial<T[2]>,
 ) => {
-  // @ts-expect-error
-  const AtomsContext = Reflect.get(context, ATOMS_CONTEXT_KEY) as React.Context<
-    AtomState<any>
-  >
-
-  if (!AtomsContext) {
+  const AtomsInternalContext = Reflect.get(
+    // @ts-expect-error
+    context,
+    ATOMS_CONTEXT_KEY,
+  ) as React.Context<AtomsInternalContextType<T>>
+  if (!AtomsInternalContext) {
     throw new Error(
       'createOverrideAtomsContext: context is not created by createAtomsContext',
     )
   }
 
   const Component: FC<PropsWithChildren> = ({ children }) => {
+    const { AtomsContext, actionsFactory, ActionsContext } =
+      useContext(AtomsInternalContext)
     const atomsCtx = useContext(AtomsContext)
     const overrideAtoms = useMemo(() => ({ ...atomsCtx, ...atoms }), [atomsCtx])
+
+    const actions = useMemo(
+      () => actionsFactory(createActionContext(overrideAtoms)),
+      [actionsFactory, overrideAtoms],
+    )
     return (
       <AtomsContext.Provider value={overrideAtoms}>
-        {children}
+        <ActionsContext.Provider value={actions}>
+          {children}
+        </ActionsContext.Provider>
       </AtomsContext.Provider>
     )
   }
   return Component
 }
-
-// const a = use('a')
-/**
- *
- *
- *```ts
- * const someCtxValue = useStoreValue((get,ctxValue) => get(ctxValue.someAtom))
- *
- *
- *
- * createStoreContext({
- *  someAtom: atom(0),
- * }, (ctx) => {
- * const { get, set, state } = ctx
- * return {
- * increment: () => {
- * set(stateValue.someAtom, current => current + 1)
- *  }
- * }
- * })
- *```
- */
