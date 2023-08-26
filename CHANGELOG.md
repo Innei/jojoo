@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [0.0.7](https://github.com/Innei/rollup-typescript-lib/compare/v0.0.6...v0.0.7) (2023-08-26)
+
+
+### Bug Fixes
+
+* get jotaistore ([1cee306](https://github.com/Innei/rollup-typescript-lib/commit/1cee3069d2cef5689d4062e2639ff47390dbe461))
+
+
+
 ## [0.0.6](https://github.com/Innei/rollup-typescript-lib/compare/v0.0.5...v0.0.6) (2023-08-26)
 
 
