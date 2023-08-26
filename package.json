@@ -1,6 +1,7 @@
 {
   "name": "jojoo",
   "version": "0.0.3",
+  "private": true,
   "description": "A utils for Jotai v2.",
   "author": "Innei",
   "license": "MIT",
@@ -16,36 +17,6 @@
     "src"
   ],
   "type": "module",
-  "main": "./src/index.ts",
-  "exports": {
-    ".": {
-      "import": "./src/index.ts"
-    },
-    "./*": {
-      "import": "./src/*"
-    }
-  },
-  "publishConfig": {
-    "main": "dist/index.js",
-    "module": "dist/index.mjs",
-    "exports": {
-      ".": {
-        "type": "./dist/index.d.ts",
-        "import": "./dist/index.mjs",
-        "require": "./dist/index.js"
-      },
-      "./react": {
-        "type": "./dist/react/index.d.ts",
-        "import": "./dist/react/index.mjs",
-        "require": "./dist/react/index.js"
-      },
-      "./vanilla": {
-        "type": "./dist/vanilla/index.d.ts",
-        "import": "./dist/vanilla/index.mjs",
-        "require": "./dist/vanilla/index.js"
-      }
-    }
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -61,13 +32,17 @@
     "before": [
       "npm run build"
     ],
-    "publish": true,
+    "after": [
+      "npm publish dist"
+    ],
+    "publish": false,
     "changelog": true
   },
   "scripts": {
     "prebuild": "rm -rf lib && rm -rf esm",
     "build": "rollup -c rollup.config.ts --configPlugin swc3 --bundleConfigAsCjs",
-    "prepackage": "rm -rf dist",
+    "postbuild": "tsx tools/postbuild.ts",
+    "prepublishOnly": "npm run build && echo \"This package is not meant to be published from root dir.\" && exit 1",
     "test": "vitest",
     "prepare": "husky install && cd example && pnpm i",
     "release": "bump"
@@ -90,12 +65,14 @@
     "@testing-library/jest-dom": "6.1.2",
     "@testing-library/react": "14.0.0",
     "@testing-library/user-event": "14.4.3",
+    "@types/fs-extra": "11.0.1",
     "@types/node": "20.5.0",
     "@types/react": "^18.0.0",
     "@unocss/preset-wind": "0.55.1",
     "browserslist": "4.21.10",
     "dts-bundle-generator": "^8.0.1",
     "esbuild": "0.19.2",
+    "fs-extra": "11.1.1",
     "husky": "8.0.3",
     "immer": "10.0.2",
     "jotai": "2.4.0",
