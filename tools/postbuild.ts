@@ -49,14 +49,15 @@ const createPackageJson = async (entries: Record<string, string>) => {
   }
 
   Object.keys(entries).forEach((entryName) => {
-    packageJsonCopy.exports[`./${entryName}`] = {
-      types: `./${entryName}/index.d.ts`,
+    const nextEntryName = entryName === '.' ? '.' : `./${entryName}`
+    packageJsonCopy.exports[nextEntryName] = {
+      types: `${nextEntryName}/index.d.ts`,
       import: {
-        types: `./${entryName}/index.d.ts`,
-        default: `./${entryName}/index.mjs`,
+        types: `${nextEntryName}/index.d.ts`,
+        default: `${nextEntryName}/index.mjs`,
       },
-      require: `./${entryName}/index.cjs`,
-      default: `./${entryName}/index.js`,
+      require: `${nextEntryName}/index.cjs`,
+      default: `${nextEntryName}/index.js`,
     }
   })
 
