@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [0.0.8](https://github.com/Innei/rollup-typescript-lib/compare/v0.0.7...v0.0.8) (2023-08-26)
+
+
+### Features
+
+* add sideEffects false ([28acb84](https://github.com/Innei/rollup-typescript-lib/commit/28acb84d19011656a521a23c8172b678ff897d2b))
+
+
+
 ## [0.0.7](https://github.com/Innei/rollup-typescript-lib/compare/v0.0.6...v0.0.7) (2023-08-26)
 
 
