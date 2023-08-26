@@ -29,11 +29,10 @@
     ]
   },
   "bump": {
-    "before": [
-      "npm run build"
-    ],
+    "before": [],
     "after": [
-      "npm publish dist"
+      "npm run build",
+      "cd dist && npm publish"
     ],
     "publish": false,
     "changelog": true
