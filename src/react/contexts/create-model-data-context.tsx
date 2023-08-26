@@ -19,7 +19,6 @@ import { getStore } from '~/index.js'
 import { useBeforeMounted } from '../hooks/use-before-mounted.js'
 
 export const createModelDataProvider = <Model,>() => {
-  const jotaiStore = getStore()
   const ModelDataAtomContext = createContext(
     null! as PrimitiveAtom<null | Model>,
   )
@@ -45,17 +44,19 @@ export const createModelDataProvider = <Model,>() => {
     const currentDataAtom =
       useContext(ModelDataAtomContext) ?? globalModelDataAtom
 
+    const setData = useSetAtom(currentDataAtom)
+
     useBeforeMounted(() => {
-      jotaiStore.set(currentDataAtom, data)
+      setData(data)
     })
 
     useEffect(() => {
-      jotaiStore.set(currentDataAtom, data)
+      setData(data)
     }, [data])
 
     useEffect(() => {
       return () => {
-        jotaiStore.set(currentDataAtom, null)
+        setData(null)
       }
     }, [])
 
@@ -81,6 +82,7 @@ export const createModelDataProvider = <Model,>() => {
     useSetAtom(useContext(ModelDataAtomContext) ?? globalModelDataAtom)
 
   const setGlobalModelData = (recipe: (draft: Model) => void) => {
+    const jotaiStore = getStore()
     jotaiStore.set(
       globalModelDataAtom,
       produce(jotaiStore.get(globalModelDataAtom), recipe),
@@ -88,7 +90,7 @@ export const createModelDataProvider = <Model,>() => {
   }
 
   const getGlobalModelData = () => {
-    return jotaiStore.get(globalModelDataAtom)
+    return getStore().get(globalModelDataAtom)
   }
 
   return {
