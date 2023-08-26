@@ -10,7 +10,10 @@
     "directory": "Innei/rollup-typescript-lib"
   },
   "files": [
-    "**"
+    "dist",
+    "package.json",
+    "README.md",
+    "src"
   ],
   "type": "module",
   "main": "./src/index.ts",
