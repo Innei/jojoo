@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [0.0.5](https://github.com/Innei/rollup-typescript-lib/compare/v0.0.4...v0.0.5) (2023-08-26)
+
+
+### Bug Fixes
+
+* package pub all dist  files ([db2e2f2](https://github.com/Innei/rollup-typescript-lib/commit/db2e2f2e36cf8d95fb7e848614a087957690366f))
+
+
+
 ## [0.0.4](https://github.com/Innei/rollup-typescript-lib/compare/v0.0.3...v0.0.4) (2023-08-26)
 
 
