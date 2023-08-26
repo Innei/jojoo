@@ -84,7 +84,7 @@ export const createAtomsContext = <
    */
   const hooks = [useContextAtoms, useStoreValue, useContextActions] as const
 
-  const combinedValue = [Provider, hooks, atoms] as const
+  const combinedValue = [Provider, hooks, atoms, returnActions] as const
 
   defineProperty(combinedValue, ATOMS_CONTEXT_KEY, AtomsInternalContext)
 

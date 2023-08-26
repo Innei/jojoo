@@ -20,7 +20,7 @@ describe('createAtomsContext', () => {
     }
 
     const context = createAtomsContext(globalAtoms, (ctx) => {
-      const { atoms, get, set } = ctx
+      const { atoms, set } = ctx
       return {
         increment: () => {
           set(atoms.aAtom, (current) => current + 1)
@@ -87,10 +87,8 @@ describe('createAtomsContext', () => {
     )
 
     await userEvent.click(screen.getByTestId('inc'))
-    act(() => {
-      expect(screen.getByTestId('a')).toHaveTextContent('1')
-      expect(screen.getByTestId('count')).toHaveTextContent('1')
-    })
+    expect(screen.getByTestId('a')).toHaveTextContent('1')
+    expect(screen.getByTestId('count')).toHaveTextContent('1')
   })
 
   it('overrideAtom should work', async () => {
@@ -109,20 +107,31 @@ describe('createAtomsContext', () => {
       </App>,
     )
 
-    act(() => {
-      expect(screen.getByTestId('a')).toHaveTextContent('0')
-      expect(screen.getByTestId('oa')).toHaveTextContent('-100')
-    })
+    expect(screen.getByTestId('a')).toHaveTextContent('0')
+    expect(screen.getByTestId('oa')).toHaveTextContent('-100')
 
     await userEvent.click(screen.getByTestId('inc'))
-    act(() => {
-      expect(screen.getByTestId('a')).toHaveTextContent('0')
-      expect(screen.getByTestId('oa')).toHaveTextContent('-99')
-    })
+    expect(screen.getByTestId('a')).toHaveTextContent('0')
+    expect(screen.getByTestId('oa')).toHaveTextContent('-99')
 
     function Child() {
       const a = useAtomValue(useContextAtoms().aAtom)
       return <div data-testid="oa">{a}</div>
     }
+  })
+
+  it('exposed actions should work', async () => {
+    const { App, context } = createTestingModule()
+
+    render(<App />)
+
+    const [, , , actions] = context
+    const { increment } = actions
+
+    act(() => {
+      increment()
+    })
+
+    expect(screen.getByTestId('a')).toHaveTextContent('1')
   })
 })
