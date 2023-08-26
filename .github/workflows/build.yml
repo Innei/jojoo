@@ -38,7 +38,7 @@ jobs:
         with:
           version: 8.x.x
           run_install: true
-      - run: pnpm run package
+      - run: pnpm run build
       - run: pnpm run test
         env:
           CI: true
