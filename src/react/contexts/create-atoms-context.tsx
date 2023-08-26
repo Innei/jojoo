@@ -3,6 +3,7 @@ import { useAtomValue } from 'jotai'
 import type { ExtractAtomValue, PrimitiveAtom } from 'jotai'
 import type { FC, PropsWithChildren } from 'react'
 
+import { noop } from '~/__internal/constants.js'
 import { defineProperty } from '~/__internal/helper.js'
 import { getStore } from '~/index.js'
 
@@ -18,7 +19,7 @@ type Ctx<Atoms> = {
   atoms: Atoms
 }
 
-type ActionType = { [K in string]?: () => void | Promise<void> }
+type ActionType<T = any> = { [K: string]: (...args: any[]) => T | Promise<T> }
 
 const ATOMS_CONTEXT_KEY = Symbol('ATOMS_CONTEXT')
 
@@ -38,11 +39,11 @@ const createActionContext = <T, Atoms = AtomState<T>>(atoms: Atoms) => {
 }
 export const createAtomsContext = <
   T,
-  Atoms = AtomState<T>,
+  Atoms extends AtomState<T> = AtomState<T>,
   Action extends ActionType = {},
 >(
   atoms: Atoms,
-  actions: (ctx: Ctx<Atoms>) => Action,
+  actions: (ctx: Ctx<Atoms>) => Action = noop as any,
 ) => {
   const AtomsContext = createContext(atoms)
 
@@ -73,9 +74,7 @@ export const createAtomsContext = <
   const useContextAtoms = () => useContext(AtomsContext)
   const useStoreValue = <K extends keyof Atoms>(atom: K) => {
     const atoms = useContextAtoms()
-    return useAtomValue(
-      atoms[atom] as PrimitiveAtom<Atoms[K]>,
-    ) as ExtractAtomValue<Atoms[K]>
+    return useAtomValue(atoms[atom]) as ExtractAtomValue<Atoms[K]>
   }
 
   const useContextActions = () => useContext(ActionsContext)
@@ -95,11 +94,10 @@ export const createOverrideAtomsContext = <
   T extends ReturnType<typeof createAtomsContext>,
 >(
   context: T,
-  // @ts-expect-error
+
   atoms: Partial<T[2]>,
 ) => {
   const AtomsInternalContext = Reflect.get(
-    // @ts-expect-error
     context,
     ATOMS_CONTEXT_KEY,
   ) as React.Context<AtomsInternalContextType<T>>

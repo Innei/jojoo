@@ -135,3 +135,123 @@ describe('createAtomsContext', () => {
     expect(screen.getByTestId('a')).toHaveTextContent('1')
   })
 })
+
+describe('real world testing (PageStore)', async () => {
+  setStore(getDefaultStore())
+
+  const createTestingModule = () => {
+    const context = createAtomsContext(
+      {
+        postId: atom('0'),
+        text: atom('global post text'),
+      },
+      ({ atoms, set }) => {
+        return {
+          setText: (text: string) => {
+            set(atoms.text, text)
+          },
+        }
+      },
+    )
+
+    const [GlobalDataProvider, [useAtoms, useDataValue, useDataActions]] =
+      context
+    const OverrideProvider = createOverrideAtomsContext(context, {
+      text: atom('override post text'),
+      postId: atom('1'),
+    })
+
+    const DataRender: FC<{
+      testId?: string
+    }> = ({ testId }) => {
+      const text = useDataValue('text')
+      const id = useDataValue('postId')
+      return (
+        <div>
+          <p>
+            Data Id:
+            <span data-testid={`${testId}-data-id`}>{id}</span>
+          </p>
+
+          <p>
+            Data Text:
+            <span data-testid={`${testId}-data-text`}>{text}</span>
+          </p>
+        </div>
+      )
+    }
+
+    const DataActions: FC<{
+      testId?: string
+    }> = (props) => {
+      const { testId } = props
+      const { setText } = useDataActions()
+      const text = useDataValue('text')
+      return (
+        <div>
+          <button
+            data-testid={`${testId}-update`}
+            onClick={() => setText(`${text} updated`)}
+          ></button>
+        </div>
+      )
+    }
+
+    render(
+      <GlobalDataProvider>
+        <DataRender testId="global" />
+        <DataActions testId="global" />
+
+        <OverrideProvider>
+          <DataRender testId="scope" />
+          <DataActions testId="scope" />
+        </OverrideProvider>
+      </GlobalDataProvider>,
+    )
+
+    return {
+      useAtoms,
+      useDataValue,
+      useDataActions,
+    }
+  }
+
+  it('should render', () => {
+    createTestingModule()
+    expect(screen.getByTestId('global-data-id')).toHaveTextContent('0')
+    expect(screen.getByTestId('global-data-text')).toHaveTextContent(
+      'global post text',
+    )
+
+    expect(screen.getByTestId('scope-data-id')).toHaveTextContent('1')
+    expect(screen.getByTestId('scope-data-text')).toHaveTextContent(
+      'override post text',
+    )
+  })
+
+  it('update scoped text but not global', async () => {
+    createTestingModule()
+
+    await userEvent.click(screen.getByTestId('scope-update'))
+
+    expect(screen.getByTestId('global-data-text')).toHaveTextContent(
+      'global post text',
+    )
+    expect(screen.getByTestId('scope-data-text')).toHaveTextContent(
+      'override post text updated',
+    )
+  })
+
+  it('update global text', async () => {
+    createTestingModule()
+
+    await userEvent.click(screen.getByTestId('global-update'))
+
+    expect(screen.getByTestId('global-data-text')).toHaveTextContent(
+      'global post text updated',
+    )
+    expect(screen.getByTestId('scope-data-text')).toHaveTextContent(
+      'override post text',
+    )
+  })
+})
