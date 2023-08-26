@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [0.0.4](https://github.com/Innei/rollup-typescript-lib/compare/v0.0.3...v0.0.4) (2023-08-26)
+
+
+### Bug Fixes
+
+* publish stage ([9d5ec34](https://github.com/Innei/rollup-typescript-lib/commit/9d5ec349f9d040dc73965116f43dc96a1d0d563d))
+
+
+
 ## [0.0.3](https://github.com/Innei/rollup-typescript-lib/compare/v0.0.2...v0.0.3) (2023-08-26)
 
 
