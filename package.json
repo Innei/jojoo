@@ -5,6 +5,7 @@
   "description": "A utils for Jotai v2.",
   "author": "Innei",
   "license": "MIT",
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/Innei/rollup-typescript-lib",
