@@ -79,7 +79,7 @@ const IncrementButton = () => {
 
 You can directly call `actions` returned by `createAtomsContext` outside of the component.
 
-```ts
+```tsx
 const context = createAtomsContext(globalAtoms, (ctx) => {
   const { atoms, set } = ctx
   return {
@@ -143,7 +143,7 @@ const DataRender: FC<{}> = ({ testId }) => {
   )
 }
 
-const DataActions: FC<{}> = (props) => {
+const DataActions: FC<> = (props) => {
   const { testId } = props
   const { setText } = useDataActions()
   const text = useDataValue('text')
@@ -155,15 +155,17 @@ const DataActions: FC<{}> = (props) => {
 }
 
 // ReactNode structure like:
-;<GlobalDataProvider>
-  <DataRender />
-  <DataActions />
-
-  <OverrideProvider>
+const App = () => (
+  <GlobalDataProvider>
     <DataRender />
     <DataActions />
-  </OverrideProvider>
-</GlobalDataProvider>
+
+    <OverrideProvider>
+      <DataRender />
+      <DataActions />
+    </OverrideProvider>
+  </GlobalDataProvider>
+)
 ```
 
 Child components wrapped by `OverrideProvider` will use the overridden atoms, isolated from global atoms. Of course, you can also use it in a nested manner.
@@ -188,8 +190,70 @@ Child components wrapped by `OverrideProvider` will use the overridden atoms, is
 
 #### `createModelDataContext`
 
+Create a dataset context through `createModelDataContext`, which can manage data with Jotai, and then pass it to descendants through React.context. Utilize the feature of React.context to isolate state in multiple scenarios.
 
-TODO
+A simple usage example:
+
+```tsx
+interface NoteModel {
+  title: string
+}
+
+const {
+  ModelDataProvider,
+  ModelDataAtomProvider,
+  getGlobalModelData: getModelData,
+  setGlobalModelData: setModelData,
+  useModelDataSelector,
+  useSetModelData,
+} = createModelDataProvider<NoteModel>()
+
+export {
+  ModelDataProvider as CurrentNoteDataProvider,
+  ModelDataAtomProvider as CurrentNoteDataAtomProvider,
+  getModelData as getCurrentNoteData,
+  setModelData as setCurrentNoteData,
+  useModelDataSelector as useCurrentNoteDataSelector,
+  useSetModelData as useSetCurrentNoteData,
+}
+
+const App = () => {
+  return (
+    <>
+      <CurrentNoteDataProvider data={data} />
+      <DataRender />
+    </>
+  )
+}
+
+const DataRender = () => {
+  const title = useCurrentNoteDataSelector((n) => n.title)
+  return <span>{title}</span>
+}
+```
+
+You can also use `ModelDataAtomProvider` for scope isolation. In this way, the internal data of `ModelData` in both `App` and `AnotherData` are completely independent.
+
+```tsx
+const App = () => (
+  <>
+    <CurrentNoteDataProvider data={data} />
+    <DataRender />
+    <AnotherData />
+  </>
+)
+
+const AnotherData = () => {
+  const overrideAtom = useMemo(() => atom(null as null | NoteModel), [])
+
+  return (
+    <CurrentNoteDataAtomProvider overrideAtom={overrideAtom}>
+      <CurrentNoteDataProvider data={data} />
+      <DataRender />
+    </CurrentNoteDataAtomProvider>
+  )
+}
+```
 
 ## License
 
