@@ -19,13 +19,11 @@ import { getStore } from '~/index.js'
 import { useBeforeMounted } from '../hooks/use-before-mounted.js'
 
 export const createModelDataProvider = <Model,>() => {
-  const ModelDataAtomContext = createContext(
-    null! as PrimitiveAtom<null | Model>,
-  )
-  const globalModelDataAtom = atom<null | Model>(null)
+  const ModelDataAtomContext = createContext(null! as PrimitiveAtom<Model>)
+  const globalModelDataAtom = atom<Model>(null! as Model)
   const ModelDataAtomProvider: FC<
     PropsWithChildren<{
-      overrideAtom?: PrimitiveAtom<null | Model>
+      overrideAtom?: PrimitiveAtom<Model>
     }>
   > = ({ children, overrideAtom }) => {
     return (
@@ -56,7 +54,7 @@ export const createModelDataProvider = <Model,>() => {
 
     useEffect(() => {
       return () => {
-        setData(null)
+        setData(null!)
       }
     }, [])
 
@@ -75,7 +73,7 @@ export const createModelDataProvider = <Model,>() => {
       return data ? selector(data) : null
     }, deps || noopArr)
 
-    return useAtomValue(selectAtom(currentDataAtom, nextSelector))
+    return useAtomValue(selectAtom(currentDataAtom, nextSelector))!
   }
 
   const useSetModelData = () =>
