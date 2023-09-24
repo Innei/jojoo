@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## [0.0.9](https://github.com/Innei/rollup-typescript-lib/compare/v0.0.8...v0.0.9) (2023-09-24)
+
+
+### Bug Fixes
+
+* cio ([4a566f6](https://github.com/Innei/rollup-typescript-lib/commit/4a566f6a58ef077cd1aab1d51b9de2b325446807))
+* type error ([c18adb4](https://github.com/Innei/rollup-typescript-lib/commit/c18adb4c9fc8e98202733cb691294102a1d998c1))
+* update docs anchor ([22152bb](https://github.com/Innei/rollup-typescript-lib/commit/22152bb306405571674f31f67064f2435e18f8c4))
+
+
+### Features
+
+* add readme ([fd7a222](https://github.com/Innei/rollup-typescript-lib/commit/fd7a2226f1f53e9eadaf33ce8cac3746e0e61e2e))
+* add test case ([50f73d9](https://github.com/Innei/rollup-typescript-lib/commit/50f73d941b4b76c915f000af17a798d502272ece))
+
+
+
 ## [0.0.8](https://github.com/Innei/rollup-typescript-lib/compare/v0.0.7...v0.0.8) (2023-08-26)
 
 
