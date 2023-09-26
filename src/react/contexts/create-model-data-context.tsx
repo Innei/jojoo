@@ -8,13 +8,13 @@ import React, {
   useEffect,
 } from 'react'
 import { produce } from 'immer'
-import { atom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtomValue, useSetAtom, useStore } from 'jotai'
 import { selectAtom } from 'jotai/utils'
 import type { PrimitiveAtom } from 'jotai'
 import type { FC, PropsWithChildren } from 'react'
 
 import { noopArr } from '~/__internal/constants.js'
-import { getStore } from '~/index.js'
+import { getGlobalStore } from '~/index.js'
 
 import { useBeforeMounted } from '../hooks/use-before-mounted.js'
 
@@ -53,6 +53,7 @@ export const createModelDataProvider = <Model,>() => {
     }, [data])
 
     useEffect(() => {
+      setData(data)
       return () => {
         setData(null!)
       }
@@ -80,7 +81,7 @@ export const createModelDataProvider = <Model,>() => {
     useSetAtom(useContext(ModelDataAtomContext) ?? globalModelDataAtom)
 
   const setGlobalModelData = (recipe: (draft: Model) => void) => {
-    const jotaiStore = getStore()
+    const jotaiStore = getGlobalStore()
     jotaiStore.set(
       globalModelDataAtom,
       produce(jotaiStore.get(globalModelDataAtom), recipe),
@@ -88,14 +89,15 @@ export const createModelDataProvider = <Model,>() => {
   }
 
   const getGlobalModelData = () => {
-    return getStore().get(globalModelDataAtom)
+    return getGlobalStore().get(globalModelDataAtom)
   }
 
   const useGetModelData = () => {
     const currentDataAtom =
       useContext(ModelDataAtomContext) ?? globalModelDataAtom
+    const store = useStore()
     return () => {
-      return getStore().get(currentDataAtom)
+      return store.get(currentDataAtom)
     }
   }
 

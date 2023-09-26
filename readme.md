@@ -10,18 +10,15 @@ pnpm i jojoo
 
 ## Usage
 
-You should `setStore` first.
+If you want to use custom store, should `setGlobalStore` first.
 
 ```ts
-import { setStore } from 'jojoo'
+import { setGlobalStore } from 'jojoo'
 import { createStore, getDefaultStore } from 'jotai/vanilla'
 
-// if you use default store
-setStore(getDefaultStore())
-
-// or you provide a store
+// if you use custom store
 const store = createStore()
-setStore(store)
+setGlobalStore(store)
 ```
 
 ### React Hooks

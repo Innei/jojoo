@@ -1,10 +1,10 @@
 import type { PrimitiveAtom } from 'jotai'
 
-import { getStore } from '~/lib/init.js'
+import { getGlobalStore } from '~/lib/init.js'
 
 export const createAtomAccessor = <T>(atom: PrimitiveAtom<T>) => {
   return [
-    () => getStore().get(atom),
-    (value: T) => getStore().set(atom, value),
+    () => getGlobalStore().get(atom),
+    (value: T) => getGlobalStore().set(atom, value),
   ] as const
 }

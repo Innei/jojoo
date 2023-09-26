@@ -5,13 +5,13 @@ import type { FC, PropsWithChildren } from 'react'
 
 import { noop } from '~/__internal/constants.js'
 import { defineProperty } from '~/__internal/helper.js'
-import { getStore } from '~/index.js'
+import { getGlobalStore } from '~/index.js'
 
 type AtomState<T> = {
   [K in keyof T]: PrimitiveAtom<T[K]>
 }
 
-type JotaiStore = ReturnType<typeof getStore>
+type JotaiStore = ReturnType<typeof getGlobalStore>
 
 type Ctx<Atoms> = {
   get: JotaiStore['get']
@@ -30,7 +30,7 @@ interface AtomsInternalContextType<T, A = AtomState<T>, Ac = ActionType> {
   actionsFactory: (ctx: Ctx<A>) => Ac
 }
 const createActionContext = <T, Atoms = AtomState<T>>(atoms: Atoms) => {
-  const jotaiStore = getStore()
+  const jotaiStore = getGlobalStore()
   return {
     get: jotaiStore.get,
     set: jotaiStore.set,

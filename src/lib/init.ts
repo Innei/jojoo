@@ -1,14 +1,11 @@
-import type { createStore } from 'jotai'
+import { getDefaultStore } from 'jotai'
 
-let jotaiStore: ReturnType<typeof createStore>
+let jotaiStore = getDefaultStore()
 
-export const setStore = (store: typeof jotaiStore) => {
+export const setGlobalStore = (store: typeof jotaiStore) => {
   jotaiStore = store
 }
 
-export const getStore = () => {
-  if (!jotaiStore)
-    throw new Error('jotaiStore is not initialized, please call setStore first')
-
+export const getGlobalStore = () => {
   return jotaiStore
 }

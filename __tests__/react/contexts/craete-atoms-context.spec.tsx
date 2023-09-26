@@ -8,10 +8,10 @@ import type { FC, PropsWithChildren } from 'react'
 
 import userEvent from '@testing-library/user-event'
 
-import { setStore } from '~/index.js'
+import { setGlobalStore } from '~/index.js'
 
 describe('createAtomsContext', () => {
-  setStore(getDefaultStore())
+  setGlobalStore(getDefaultStore())
 
   const createTestingModule = () => {
     const globalAtoms = {
@@ -137,7 +137,7 @@ describe('createAtomsContext', () => {
 })
 
 describe('real world testing (PageStore)', async () => {
-  setStore(getDefaultStore())
+  setGlobalStore(getDefaultStore())
 
   const createTestingModule = () => {
     const context = createAtomsContext(
