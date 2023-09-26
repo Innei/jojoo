@@ -1,5 +1,19 @@
 # CHANGELOG
 
+# [0.1.0](https://github.com/Innei/rollup-typescript-lib/compare/v0.0.9...v0.1.0) (2023-09-26)
+
+
+### Bug Fixes
+
+* action ctx ([d2cda01](https://github.com/Innei/rollup-typescript-lib/commit/d2cda01073ae737be619ceb40c01120a21382196))
+
+
+### Features
+
+* add two accessor for atom ([67b1e2c](https://github.com/Innei/rollup-typescript-lib/commit/67b1e2c46da1fc7323044b3251012884a842db99))
+
+
+
 ## [0.0.9](https://github.com/Innei/rollup-typescript-lib/compare/v0.0.8...v0.0.9) (2023-09-24)
 
 
