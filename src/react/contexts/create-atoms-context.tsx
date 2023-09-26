@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useMemo } from 'react'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useStore } from 'jotai'
 import type { ExtractAtomValue, PrimitiveAtom } from 'jotai'
 import type { FC, PropsWithChildren } from 'react'
 
@@ -29,13 +29,21 @@ interface AtomsInternalContextType<T, A = AtomState<T>, Ac = ActionType> {
 
   actionsFactory: (ctx: Ctx<A>) => Ac
 }
-const createActionContext = <T, Atoms = AtomState<T>>(atoms: Atoms) => {
-  const jotaiStore = getGlobalStore()
-  return {
-    get: jotaiStore.get,
-    set: jotaiStore.set,
-    atoms,
-  }
+const useCreateActionContext = <T, Atoms = AtomState<T>>(atoms: Atoms) => {
+  const jotaiStore = useStore()
+  return useMemo(
+    () => ({
+      get: jotaiStore.get,
+      set: jotaiStore.set,
+      atoms,
+    }),
+    [jotaiStore, atoms],
+  )
+}
+const jotaiStore = getGlobalStore()
+const globalActions = {
+  get: jotaiStore.get,
+  set: jotaiStore.set,
 }
 export const createAtomsContext = <
   T,
@@ -47,7 +55,10 @@ export const createAtomsContext = <
 ) => {
   const AtomsContext = createContext(atoms)
 
-  const returnActions = actions(createActionContext(atoms))
+  const returnActions = actions({
+    ...globalActions,
+    atoms,
+  })
   const ActionsContext = createContext(returnActions)
 
   const AtomsInternalContext = createContext<
@@ -60,6 +71,11 @@ export const createAtomsContext = <
   }
 
   const Provider: FC<PropsWithChildren> = ({ children }) => {
+    const actionsCtx = useCreateActionContext(atoms)
+    const returnActions = useMemo(
+      () => actions(actionsCtx),
+      [actions, actionsCtx],
+    )
     return (
       <AtomsContext.Provider value={atoms}>
         <ActionsContext.Provider value={returnActions}>
@@ -113,8 +129,10 @@ export const createOverrideAtomsContext = <
     const atomsCtx = useContext(AtomsContext)
     const overrideAtoms = useMemo(() => ({ ...atomsCtx, ...atoms }), [atomsCtx])
 
+    const actionCtx = useCreateActionContext(overrideAtoms)
+
     const actions = useMemo(
-      () => actionsFactory(createActionContext(overrideAtoms)),
+      () => actionsFactory(actionCtx),
       [actionsFactory, overrideAtoms],
     )
     return (
