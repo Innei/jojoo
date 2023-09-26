@@ -91,11 +91,25 @@ export const createModelDataProvider = <Model,>() => {
     return getStore().get(globalModelDataAtom)
   }
 
+  const useGetModelData = () => {
+    const currentDataAtom =
+      useContext(ModelDataAtomContext) ?? globalModelDataAtom
+    return () => {
+      return getStore().get(currentDataAtom)
+    }
+  }
+
+  const useModelData = () => {
+    return useAtomValue(useContext(ModelDataAtomContext) ?? globalModelDataAtom)
+  }
+
   return {
     ModelDataAtomProvider,
     ModelDataProvider,
     useModelDataSelector,
     useSetModelData,
+    useGetModelData,
+    useModelData,
     setGlobalModelData,
     getGlobalModelData,
   }
