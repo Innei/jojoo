@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [0.1.1](https://github.com/Innei/rollup-typescript-lib/compare/v0.1.0...v0.1.1) (2023-09-30)
+
+
+### Features
+
+* export context ([da692b0](https://github.com/Innei/rollup-typescript-lib/commit/da692b0e5bac30d222f03a1c0c9124e54248dbef))
+
+
+
 # [0.1.0](https://github.com/Innei/rollup-typescript-lib/compare/v0.0.9...v0.1.0) (2023-09-26)
 
 
