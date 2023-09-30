@@ -114,5 +114,7 @@ export const createModelDataProvider = <Model,>() => {
     useModelData,
     setGlobalModelData,
     getGlobalModelData,
+
+    ModelDataAtomContext,
   }
 }
