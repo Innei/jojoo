@@ -1,11 +1,14 @@
 import { getDefaultStore } from 'jotai'
 
-let jotaiStore = getDefaultStore()
+let jotaiStore: ReturnType<typeof getDefaultStore> | undefined
 
 export const setGlobalStore = (store: typeof jotaiStore) => {
   jotaiStore = store
 }
 
 export const getGlobalStore = () => {
-  return jotaiStore
+  if (jotaiStore) return jotaiStore
+  const defaultStore = getDefaultStore()
+  jotaiStore = defaultStore
+  return defaultStore
 }
