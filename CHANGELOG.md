@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [0.1.3](https://github.com/Innei/rollup-typescript-lib/compare/v0.1.2...v0.1.3) (2023-12-29)
+
+
+### Bug Fixes
+
+* get singleton jotai store ([a1c9b38](https://github.com/Innei/rollup-typescript-lib/commit/a1c9b38a5cccb5e247a3e916322d98b1ecac3f17))
+
+
+
 ## [0.1.2](https://github.com/Innei/rollup-typescript-lib/compare/v0.1.1...v0.1.2) (2023-11-17)
 
 
