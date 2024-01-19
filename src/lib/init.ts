@@ -11,7 +11,7 @@ export const setGlobalStore = (store: typeof jotaiStore) => {
   globalThis[JOTAI_GLOBAL_SINGLETON] = store
 }
 
-export const getGlobalStore = () => {
+export const getGlobalStore = (): ReturnType<typeof getDefaultStore> => {
   if (jotaiStore) return jotaiStore
   if (globalThis[JOTAI_GLOBAL_SINGLETON])
     return globalThis[JOTAI_GLOBAL_SINGLETON]
