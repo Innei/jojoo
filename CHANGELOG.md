@@ -1,5 +1,14 @@
 # CHANGELOG
 
+# [0.2.0](https://github.com/Innei/rollup-typescript-lib/compare/v0.1.4...v0.2.0) (2024-05-02)
+
+
+### Bug Fixes
+
+* create store instead default store ([bb2fdbb](https://github.com/Innei/rollup-typescript-lib/commit/bb2fdbb025b5b4cb20a9a8c4c38238edba9a24e8))
+
+
+
 ## [0.1.4](https://github.com/Innei/rollup-typescript-lib/compare/v0.1.3...v0.1.4) (2024-01-19)
 
 
