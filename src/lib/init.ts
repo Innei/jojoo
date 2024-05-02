@@ -1,4 +1,4 @@
-import { getDefaultStore } from 'jotai'
+import { createStore, getDefaultStore } from 'jotai'
 
 let jotaiStore: ReturnType<typeof getDefaultStore> | undefined
 
@@ -15,7 +15,7 @@ export const getGlobalStore = (): ReturnType<typeof getDefaultStore> => {
   if (jotaiStore) return jotaiStore
   if (globalThis[JOTAI_GLOBAL_SINGLETON])
     return globalThis[JOTAI_GLOBAL_SINGLETON]
-  const defaultStore = getDefaultStore()
+  const defaultStore = createStore()
   jotaiStore = defaultStore
   globalThis[JOTAI_GLOBAL_SINGLETON] = defaultStore
   return defaultStore
