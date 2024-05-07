@@ -8,8 +8,7 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/Innei/rollup-typescript-lib",
-    "directory": "Innei/rollup-typescript-lib"
+    "url": "https://github.com/Innei/jojoo"
   },
   "files": [
     "**"
