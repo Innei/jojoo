@@ -82,7 +82,7 @@
     "rollup-plugin-swc3": "0.9.1",
     "tslib": "2.6.1",
     "typescript": "5.1.6",
-    "vite": "4.4.12",
+    "vite": "4.5.3",
     "vite-tsconfig-paths": "4.2.0",
     "vitest": "0.34.1"
   }
