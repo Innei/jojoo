@@ -1,5 +1,14 @@
 # CHANGELOG
 
+# [0.3.0-alpha.1](https://github.com/Innei/jojoo/compare/v0.3.0-alpha.0...v0.3.0-alpha.1) (2024-05-07)
+
+
+### Bug Fixes
+
+* force hydrate ([96892d9](https://github.com/Innei/jojoo/commit/96892d942213253668baa21bb6f19d875f7f1010))
+
+
+
 # [0.3.0-alpha.0](https://github.com/Innei/jojoo/compare/v0.2.0...v0.3.0-alpha.0) (2024-05-07)
 
 
