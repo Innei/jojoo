@@ -1,5 +1,14 @@
 # CHANGELOG
 
+# [0.3.0](https://github.com/Innei/jojoo/compare/v0.3.0-alpha.1...v0.3.0) (2024-05-07)
+
+
+### Reverts
+
+* hydrate data ([a05986d](https://github.com/Innei/jojoo/commit/a05986d16c40ab07c817b7d714e2eb3ee5150187))
+
+
+
 # [0.3.0-alpha.1](https://github.com/Innei/jojoo/compare/v0.3.0-alpha.0...v0.3.0-alpha.1) (2024-05-07)
 
 
