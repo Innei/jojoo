@@ -3,11 +3,12 @@
 import { createContext, memo, useCallback, useContext, useEffect } from 'react'
 import { produce } from 'immer'
 import { atom, useAtomValue, useSetAtom, useStore } from 'jotai'
-import { selectAtom, useHydrateAtoms } from 'jotai/utils'
+import { selectAtom } from 'jotai/utils'
 import type { PrimitiveAtom } from 'jotai'
 import type { FC, PropsWithChildren } from 'react'
 
 import { noopArr } from '~/__internal/constants.js'
+import { useBeforeMounted } from '~/hooks/use-before-mounted.js'
 import { getGlobalStore } from '~/index.js'
 
 export const createModelDataProvider = <Model,>() => {
@@ -36,8 +37,12 @@ export const createModelDataProvider = <Model,>() => {
 
     const setData = useSetAtom(currentDataAtom)
 
-    useHydrateAtoms([[currentDataAtom, data]], {
-      dangerouslyForceHydrate: true,
+    // useHydrateAtoms([[currentDataAtom, data]], {
+    //   dangerouslyForceHydrate: true,
+    // })
+
+    useBeforeMounted(() => {
+      setData(data)
     })
 
     useEffect(() => {
