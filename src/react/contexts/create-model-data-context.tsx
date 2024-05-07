@@ -36,7 +36,9 @@ export const createModelDataProvider = <Model,>() => {
 
     const setData = useSetAtom(currentDataAtom)
 
-    useHydrateAtoms([[currentDataAtom, data]])
+    useHydrateAtoms([[currentDataAtom, data]], {
+      dangerouslyForceHydrate: true,
+    })
 
     useEffect(() => {
       setData(data)
