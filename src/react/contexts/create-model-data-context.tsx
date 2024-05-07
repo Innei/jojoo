@@ -1,22 +1,14 @@
 'use client'
 
-import React, {
-  createContext,
-  memo,
-  useCallback,
-  useContext,
-  useEffect,
-} from 'react'
+import { createContext, memo, useCallback, useContext, useEffect } from 'react'
 import { produce } from 'immer'
 import { atom, useAtomValue, useSetAtom, useStore } from 'jotai'
-import { selectAtom } from 'jotai/utils'
+import { selectAtom, useHydrateAtoms } from 'jotai/utils'
 import type { PrimitiveAtom } from 'jotai'
 import type { FC, PropsWithChildren } from 'react'
 
 import { noopArr } from '~/__internal/constants.js'
 import { getGlobalStore } from '~/index.js'
-
-import { useBeforeMounted } from '../hooks/use-before-mounted.js'
 
 export const createModelDataProvider = <Model,>() => {
   const ModelDataAtomContext = createContext(null! as PrimitiveAtom<Model>)
@@ -44,9 +36,7 @@ export const createModelDataProvider = <Model,>() => {
 
     const setData = useSetAtom(currentDataAtom)
 
-    useBeforeMounted(() => {
-      setData(data)
-    })
+    useHydrateAtoms([[currentDataAtom, data]])
 
     useEffect(() => {
       setData(data)
