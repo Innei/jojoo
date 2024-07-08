@@ -1,4 +1,5 @@
-import { createStore, getDefaultStore } from 'jotai'
+import { createStore } from 'jotai'
+import type { getDefaultStore } from 'jotai'
 
 let jotaiStore: ReturnType<typeof getDefaultStore> | undefined
 
