@@ -1,6 +1,6 @@
 # Jojoo
 
-A utils and extra react hooks for Jotai v2.
+A utils and extra react hooks for Jotai.
 
 ## Install
 
